@@ -6,7 +6,7 @@ using namespace std;
 int main()
 {
     MemHeap heapObj;
-/*
+
     //myNewInt
     int *myNewInt = (int*)heapObj.vmalloc(sizeof(int));
     *myNewInt = 12345678;
@@ -31,12 +31,30 @@ int main()
     heapObj.printHeapState();
     cout << endl;
 
+    heapObj.vfree(myNewInt);
+    cout << " vfree(myNewInt)" << endl;
+
+    heapObj.vfree(myNewInt3);
+    cout << " vfree(myNewInt3)" << endl;
+
+    cout << endl;
+    heapObj.printHeapState();
+    cout << endl;
+
     heapObj.vfree(myNewInt2);
     cout << " vfree(myNewInt2)" << endl;
 
     cout << endl;
     heapObj.printHeapState();
     cout << endl;
+
+    heapObj.vfree(myNewDouble);
+    cout << " vfree(myNewDouble)" << endl;
+
+    cout << endl;
+    heapObj.printHeapState();
+    cout << endl;
+    /*
 
     //myNewChar
     char *myNewChar = (char*)heapObj.vmalloc(sizeof(char));
@@ -66,7 +84,8 @@ int main()
     cout << endl;
     heapObj.printHeapState();
     cout << endl;
-*/
+    */
+/*
     cout << " Loop x20: vmalloc(sizeof(long) * 9)" << endl;
     long *fill;
     for(int i = 0; i < 21; i++)
@@ -93,6 +112,7 @@ int main()
     cout << endl;
     heapObj.printHeapState();
     cout << endl;
+    */
 
     return 0;
 }

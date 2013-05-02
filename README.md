@@ -21,10 +21,9 @@ vcalloc()
 --not implemented
 
 vfree()
---half implemented
+--implemented
 --tested
---incomplete
-----group adjacent free blocks
+--complete
 
 vsizeof()
 --implemented

@@ -74,6 +74,18 @@ void MemHeap::vfree(void* mem)
     Header *ptr = (Header*)mem;
     ptr--;
     ptr->isSet = false;
+    if(ptr->next && !ptr->next->isSet) {
+        ptr->size += ptr->next->size;
+        ptr->next = ptr->next->next;
+        if(ptr->next)
+            ptr->next->prev = ptr;
+    }
+    if(ptr->prev && !ptr->prev->isSet) {
+        ptr->prev->size += ptr->size;
+        ptr->prev->next = ptr->next;
+        if(ptr->prev->next)
+            ptr->prev->next->prev = ptr->prev;
+    }
 }
 
 size_t MemHeap::vsizeof(void* mem)
