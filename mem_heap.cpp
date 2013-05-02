@@ -14,13 +14,6 @@ MemHeap::MemHeap()
     newBlock->size = HEAP_SIZE;
     newBlock->next = NULL;
     newBlock->prev = NULL;
-
-    //Testing
-    cout << "  HeaderSize " << mHeaderSize << endl;
-    cout << "   &VHEAP[0] " << (int*)&vheap[0] << endl;
-    cout << "     &HStart " << mStartOfHeap << endl;
-    cout << "       &HEnd " << mEndOfHeap << "\n" << endl;
-    //EndTesting
 }
 
 void* MemHeap::vmalloc(size_t size)
@@ -57,7 +50,7 @@ void* MemHeap::vmalloc(size_t size)
     }
 
     if(!newBlockAddress)
-        cout << "Not enough memory found." << endl;
+        throw "Not enough memory found.";
     else
         newBlockAddress += mHeaderSize;
 
@@ -71,9 +64,12 @@ void* MemHeap::vcalloc(size_t size)
 
 void MemHeap::vfree(void* mem)
 {
+    if(!mem)
+        return;
     Header *ptr = (Header*)mem;
     ptr--;
     ptr->isSet = false;
+
     if(ptr->next && !ptr->next->isSet) {
         ptr->size += ptr->next->size;
         ptr->next = ptr->next->next;
@@ -90,6 +86,8 @@ void MemHeap::vfree(void* mem)
 
 size_t MemHeap::vsizeof(void* mem)
 {
+    if(!mem)
+        throw "Invalid pointer (NULL).";
     Header *ptr = (Header*)mem;
     ptr--;
     return ptr->size;

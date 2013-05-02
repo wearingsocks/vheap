@@ -1,118 +1,344 @@
 #include "mem_heap.h"
 #include <iostream>
+#include <string>
+#define TEST_HEAP_SIZE 2048
 
 using namespace std;
 
+bool testConstructor();
+
+bool testVmallocSimple();
+bool testVmallocFill();
+bool testVmallocOverflow();
+
+bool testVcallocSimple();
+bool testVcallocFill();
+bool testVcallocOverflow();
+
+bool testVfreeSimple();
+
+bool testVsizeof();
+bool testVsizeofNULL();
+
+bool testPrintHeapState();
+
+bool testMassFunctCombo();
+
 int main()
+{
+    string testResult;
+
+    cout << "======================================================================" << endl;
+    cout << "-->> Running: testConstructor()" << endl;
+    testResult = (testConstructor()) ? "Passed" : "Failed";
+    cout << "-->> Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->> Running: testVmallocSimple()" << endl;
+    testResult = (testVmallocSimple()) ? "Passed" : "Failed";
+    cout << "-->> Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVmallocFill()" << endl;
+    testResult = (testVmallocFill()) ? "Passed" : "Failed";
+    cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVmallocOverflow()" << endl;
+    testResult = (testVmallocOverflow()) ? "Passed" : "Failed";
+    cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->> Running: testVcallocSimple()" << endl;
+    testResult = (testVcallocSimple()) ? "Passed" : "Failed";
+    cout << "-->> Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVcallocFill()" << endl;
+    testResult = (testVcallocFill()) ? "Passed" : "Failed";
+    cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVcallocOverflow()" << endl;
+    testResult = (testVcallocOverflow()) ? "Passed" : "Failed";
+    cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVfreeSimple()" << endl;
+    testResult = (testVfreeSimple()) ? "Passed" : "Failed";
+    cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVsizeof()" << endl;
+    testResult = (testVsizeof()) ? "Passed" : "Failed";
+    cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVsizeofNULL()" << endl;
+    testResult = (testVsizeofNULL()) ? "Passed" : "Failed";
+    cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testPrintHeapState()" << endl;
+    testResult = (testPrintHeapState()) ? "Passed" : "Failed";
+    cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testMassFunctCombo()" << endl;
+    testResult = (testMassFunctCombo()) ? "Passed" : "Failed";
+    cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+
+    return 0;
+}
+
+bool testConstructor()
+{
+    MemHeap heapObj;
+    return true;
+}
+
+bool testVmallocSimple()
 {
     MemHeap heapObj;
 
-    //myNewInt
-    int *myNewInt = (int*)heapObj.vmalloc(sizeof(int));
-    *myNewInt = 12345678;
-    cout << "    myNewInt " << myNewInt << "     " << *myNewInt << "     " << heapObj.vsizeof(myNewInt) << endl;
-
-    //myNewInt2
-    int *myNewInt2 = (int*)heapObj.vmalloc(sizeof(int));
-    *myNewInt2 = 87654321;
-    cout << "   myNewInt2 " << myNewInt2 << "     " << *myNewInt2 << "     " << heapObj.vsizeof(myNewInt2) << endl;
-
-    //myNewInt3
-    int *myNewInt3 = (int*)heapObj.vmalloc(sizeof(int));
-    *myNewInt3 = 33333333;
-    cout << "   myNewInt3 " << myNewInt3 << "     " << *myNewInt3 << "     " << heapObj.vsizeof(myNewInt3) << endl;
-
-    //myNewDouble
-    double *myNewDouble = (double*)heapObj.vmalloc(sizeof(double));
-    *myNewDouble = 12.345678;
-    cout << " myNewDouble " << myNewDouble << "     " << *myNewDouble << "      " << heapObj.vsizeof(myNewDouble) << endl;
-
-    cout << endl;
-    heapObj.printHeapState();
-    cout << endl;
-
-    heapObj.vfree(myNewInt);
-    cout << " vfree(myNewInt)" << endl;
-
-    heapObj.vfree(myNewInt3);
-    cout << " vfree(myNewInt3)" << endl;
-
-    cout << endl;
-    heapObj.printHeapState();
-    cout << endl;
-
-    heapObj.vfree(myNewInt2);
-    cout << " vfree(myNewInt2)" << endl;
-
-    cout << endl;
-    heapObj.printHeapState();
-    cout << endl;
-
-    heapObj.vfree(myNewDouble);
-    cout << " vfree(myNewDouble)" << endl;
-
-    cout << endl;
-    heapObj.printHeapState();
-    cout << endl;
-    /*
-
-    //myNewChar
     char *myNewChar = (char*)heapObj.vmalloc(sizeof(char));
     *myNewChar = 'a';
-    cout << "   myNewChar " << (int*)myNewChar << "     " << *myNewChar << "     " << heapObj.vsizeof(myNewChar) << endl;
+    cout << "Name: myNewChar  " << "   Value: " << *myNewChar << "         Address: " << (int*)myNewChar << "   Size: " << heapObj.vsizeof(myNewChar) << endl;
 
-    cout << endl;
-    heapObj.printHeapState();
-    cout << endl;
+    int *myNewInt = (int*)heapObj.vmalloc(sizeof(int));
+    *myNewInt = 123456;
+    cout << "Name: myNewInt   " << "   Value: " << *myNewInt << "    Address: " << myNewInt << "   Size: " << heapObj.vsizeof(myNewInt) << endl;
 
-    //Array Long
-    long * myLongArr = (long*)heapObj.vmalloc(sizeof(long) * 9);
-    myLongArr[0] = 11111;
-    myLongArr[1] = 22222;
-    myLongArr[2] = 33333;
-    myLongArr[3] = 44444;
-    myLongArr[4] = 55555;
-    myLongArr[5] = 66666;
-    myLongArr[6] = 77777;
-    myLongArr[7] = 88888;
-    myLongArr[8] = 99999;
-
-    cout << "myLongArr:" << endl;
-    for(int i = 0; i < 9; i++)
-        cout << "Index " << i << " = " << myLongArr[i] << " - @ address: " << &myLongArr[i] << endl;
-
-    cout << endl;
-    heapObj.printHeapState();
-    cout << endl;
-    */
-/*
-    cout << " Loop x20: vmalloc(sizeof(long) * 9)" << endl;
-    long *fill;
-    for(int i = 0; i < 21; i++)
-        fill = (long*)heapObj.vmalloc(sizeof(long) * 9);
-
-    //myNewChar
-    char *myNewChar = (char*)heapObj.vmalloc(sizeof(char));
-    if(myNewChar) {
-        *myNewChar = 'a';
-        cout << "   myNewChar " << (int*)myNewChar << "     " << *myNewChar << "     " << heapObj.vsizeof(myNewChar) << endl;
-    }
-    else
-        cout << " ---myNewChar is NULL---" << endl;
-
-    //myNewDouble
     double *myNewDouble = (double*)heapObj.vmalloc(sizeof(double));
-    if(myNewDouble) {
-        *myNewDouble = 12.345678;
-        cout << " myNewDouble " << myNewDouble << "     " << *myNewDouble << "      " << heapObj.vsizeof(myNewDouble) << endl;
+    *myNewDouble = 12.3456;
+    cout << "Name: myNewDouble" << "   Value: " << *myNewDouble << "   Address: " << myNewDouble << "   Size: " << heapObj.vsizeof(myNewDouble) << endl;
+
+    bool result = (*myNewChar == 'a' && *myNewInt == 123456 && *myNewDouble == 12.3456) ? true : false;
+    return result;
+}
+
+bool testVmallocFill()
+{
+    MemHeap heapObj;
+
+    char *myNewCharArray = (char*)heapObj.vmalloc(sizeof(char) * (TEST_HEAP_SIZE - 24));
+    for(int i = 0; i < TEST_HEAP_SIZE - 24; i += 3) {
+        myNewCharArray[i] = 'a';
+        myNewCharArray[i + 1] = 'b';
+        myNewCharArray[i + 2] = 'c';
     }
-    else
-        cout << " ---myNewDouble is NULL---" << endl;
+
+    bool result = (myNewCharArray[0] == 'a' && myNewCharArray[TEST_HEAP_SIZE - 25] == 'b') ? true : false;
+    return result;
+}
+
+bool testVmallocOverflow()
+{
+    bool result = false;
+    MemHeap heapObj;
+
+    try {
+        int *myNewIntArray = (int*)heapObj.vmalloc(sizeof(int) * (TEST_HEAP_SIZE / sizeof(int)));
+    } catch (const char* msg) {
+        cout << msg << endl;
+        result = true;
+    }
+
+    return result;
+}
+
+bool testVcallocSimple()
+{
+    return false;
+    MemHeap heapObj;
+
+    char *myNewChar = (char*)heapObj.vmalloc(sizeof(char));
+    *myNewChar = 'a';
+    cout << "Name: myNewChar  " << "   Value: " << *myNewChar << "         Address: " << (int*)myNewChar << "   Size: " << heapObj.vsizeof(myNewChar) << endl;
+
+    int *myNewInt = (int*)heapObj.vmalloc(sizeof(int));
+    *myNewInt = 123456;
+    cout << "Name: myNewInt   " << "   Value: " << *myNewInt << "    Address: " << myNewInt << "   Size: " << heapObj.vsizeof(myNewInt) << endl;
+
+    double *myNewDouble = (double*)heapObj.vmalloc(sizeof(double));
+    *myNewDouble = 12.3456;
+    cout << "Name: myNewDouble" << "   Value: " << *myNewDouble << "   Address: " << myNewDouble << "   Size: " << heapObj.vsizeof(myNewDouble) << endl;
+
+    bool result = (*myNewChar == 'a' && *myNewInt == 123456 && *myNewDouble == 12.3456) ? true : false;
+    return result;
+}
+
+bool testVcallocFill()
+{
+    return false;
+    MemHeap heapObj;
+
+    char *myNewCharArray = (char*)heapObj.vcalloc(sizeof(char) * (TEST_HEAP_SIZE - 24));
+    for(int i = 0; i < TEST_HEAP_SIZE - 24; i += 3) {
+        myNewCharArray[i] = 'a';
+        myNewCharArray[i + 1] = 'b';
+        myNewCharArray[i + 2] = 'c';
+    }
+
+    bool result = (myNewCharArray[0] == 'a' && myNewCharArray[TEST_HEAP_SIZE - 25] == 'b') ? true : false;
+    return result;
+}
+
+bool testVcallocOverflow()
+{
+    return false;
+    bool result = false;
+    MemHeap heapObj;
+
+    try {
+        int *myNewIntArray = (int*)heapObj.vcalloc(sizeof(int) * (TEST_HEAP_SIZE / sizeof(int)));
+    } catch (const char* msg) {
+        cout << msg << endl;
+        result = true;
+    }
+
+    return result;
+}
+
+bool testVfreeSimple()
+{
+    MemHeap heapObj;
+
+    int *myNewInt = (int*)heapObj.vmalloc(sizeof(int));
+    *myNewInt = 123456;
+    cout << "Name: myNewInt   " << "   Value: " << *myNewInt << "    Address: " << myNewInt << "   Size: " << heapObj.vsizeof(myNewInt) << endl;
+
+    double *myNewDouble = (double*)heapObj.vmalloc(sizeof(double));
+    *myNewDouble = 12.3456;
+    cout << "Name: myNewDouble" << "   Value: " << *myNewDouble << "   Address: " << myNewDouble << "   Size: " << heapObj.vsizeof(myNewDouble) << endl;
+
+    heapObj.printHeapState();
+
+    cout << "Free.....myNewInt" << endl;
+    heapObj.vfree(myNewInt);
+
+    heapObj.printHeapState();
+
+    cout << "Free.....myNewDouble" << endl;
+    heapObj.vfree(myNewDouble);
+
+    heapObj.printHeapState();
+
+    return true;
+}
+
+bool testVsizeof()
+{
+    MemHeap heapObj;
+
+    int *myNewInt = (int*)heapObj.vmalloc(sizeof(int));
+    *myNewInt = 123456;
+    cout << "Name: myNewInt   " << "   Value: " << *myNewInt << "    Address: " << myNewInt << "   Size: " << heapObj.vsizeof(myNewInt) << endl;
+
+    bool result = (heapObj.vsizeof(myNewInt) == 28) ? true : false;
+    return result;
+}
+
+bool testVsizeofNULL()
+{
+    bool result = false;
+    MemHeap heapObj;
+
+    try {
+        heapObj.vsizeof(NULL);
+    } catch (const char* msg) {
+        cout << msg << endl;
+        result = true;
+    }
+
+    return result;
+}
+
+bool testPrintHeapState()
+{
+    MemHeap heapObj;
+
+    int *myNewInt = (int*)heapObj.vmalloc(sizeof(int));
+    *myNewInt = 123456;
+    cout << "Name: myNewInt   " << "   Value: " << *myNewInt << "    Address: " << myNewInt << "   Size: " << heapObj.vsizeof(myNewInt) << endl;
+
+    heapObj.printHeapState();
+
+    return true;
+}
+
+bool testMassFunctCombo()
+{
+    MemHeap heapObj;
+
+    int *myNewInt = (int*)heapObj.vmalloc(sizeof(int));
+    *myNewInt = 123456;
+    cout << "Name: myNewInt   " << "   Value: " << *myNewInt << "    Address: " << myNewInt << "   Size: " << heapObj.vsizeof(myNewInt) << endl;
+
+    int *myNewInt2 = (int*)heapObj.vmalloc(sizeof(int));
+    *myNewInt2 = 654321;
+    cout << "Name: myNewInt2   " << "   Value: " << *myNewInt2 << "    Address: " << myNewInt2 << "   Size: " << heapObj.vsizeof(myNewInt2) << endl;
+
+    int *myNewInt3 = (int*)heapObj.vmalloc(sizeof(int));
+    *myNewInt3 = 332211;
+    cout << "Name: myNewInt3   " << "   Value: " << *myNewInt3 << "    Address: " << myNewInt3 << "   Size: " << heapObj.vsizeof(myNewInt3) << endl;
+
+    double *myNewDouble = (double*)heapObj.vmalloc(sizeof(double));
+    *myNewDouble = 12.3456;
+    cout << "Name: myNewDouble" << "   Value: " << *myNewDouble << "   Address: " << myNewDouble << "   Size: " << heapObj.vsizeof(myNewDouble) << endl;
 
     cout << endl;
     heapObj.printHeapState();
     cout << endl;
-    */
 
-    return 0;
+    cout << "Free.....myNewInt2" << endl;
+    heapObj.vfree(myNewInt2);
+
+    cout << endl;
+    heapObj.printHeapState();
+    cout << endl;
+
+    char *myNewChar = (char*)heapObj.vmalloc(sizeof(char));
+    *myNewChar = 'a';
+    cout << "Name: myNewChar  " << "   Value: " << *myNewChar << "         Address: " << (int*)myNewChar << "   Size: " << heapObj.vsizeof(myNewChar) << endl;
+
+    cout << endl;
+    heapObj.printHeapState();
+    cout << endl;
+
+    cout << "Free.....myNewInt3" << endl;
+    heapObj.vfree(myNewInt3);
+    cout << endl;
+
+    long * myLongArray = (long*)heapObj.vmalloc(sizeof(long) * 9);
+    myLongArray[0] = 11111;
+    myLongArray[1] = 22222;
+    myLongArray[2] = 33333;
+    myLongArray[3] = 44444;
+    myLongArray[4] = 55555;
+    myLongArray[5] = 66666;
+    myLongArray[6] = 77777;
+    myLongArray[7] = 88888;
+    myLongArray[8] = 99999;
+
+    cout << "myLongArray:" << endl;
+    for(int i = 0; i < 9; i++)
+        cout << "Index " << i << " = " << myLongArray[i] << " @ address: " << &myLongArray[i] << endl;
+
+    cout << endl;
+    heapObj.printHeapState();
+    cout << endl;
+    return true;
 }

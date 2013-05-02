@@ -7,32 +7,36 @@ Data Structures &amp; Algorithms - Virtual Heap Class
 Function list and status:
 
 MemHeap()
---implemented
---tested
---complete
+--Implemented
+--Tested
+--Complete
 
 vmalloc()
---implemented
---tested
---bugs fixed
---complete
+--Implemented
+--Tested
+--Complete
 
 vcalloc()
---not implemented
+--Not Implemented
 
 vfree()
---implemented
---tested
---complete
+--Implemented
+--Tested
+--Bug Found
+----Loose 'F' bits
+--Incomplete
 
 vsizeof()
---implemented
---tested 
---complete
+--Implemented
+--Tested 
+--Complete
 
 printHeapState()         
---implemented
---tested
---bugs fixed
---complete
+--Implemented
+--Tested
+--Complete
 
+Main.cpp
+--Implemented
+--Vcalloc Testing
+--Incomplete
