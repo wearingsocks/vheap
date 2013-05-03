@@ -27,77 +27,118 @@ bool testMassFunctCombo();
 int main()
 {
     string testResult;
+    int tests = 0, passed = 0;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->> Running: testConstructor()" << endl;
     testResult = (testConstructor()) ? "Passed" : "Failed";
     cout << "-->> Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->> Running: testVmallocSimple()" << endl;
     testResult = (testVmallocSimple()) ? "Passed" : "Failed";
     cout << "-->> Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->>  Running: testVmallocFill()" << endl;
     testResult = (testVmallocFill()) ? "Passed" : "Failed";
     cout << "-->>  Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->>  Running: testVmallocOverflow()" << endl;
     testResult = (testVmallocOverflow()) ? "Passed" : "Failed";
     cout << "-->>  Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->> Running: testVcallocSimple()" << endl;
     testResult = (testVcallocSimple()) ? "Passed" : "Failed";
     cout << "-->> Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->>  Running: testVcallocFill()" << endl;
     testResult = (testVcallocFill()) ? "Passed" : "Failed";
     cout << "-->>  Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->>  Running: testVcallocOverflow()" << endl;
     testResult = (testVcallocOverflow()) ? "Passed" : "Failed";
     cout << "-->>  Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->>  Running: testVfreeSimple()" << endl;
     testResult = (testVfreeSimple()) ? "Passed" : "Failed";
     cout << "-->>  Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->>  Running: testVsizeof()" << endl;
     testResult = (testVsizeof()) ? "Passed" : "Failed";
     cout << "-->>  Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->>  Running: testVsizeofNULL()" << endl;
     testResult = (testVsizeofNULL()) ? "Passed" : "Failed";
     cout << "-->>  Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->>  Running: testPrintHeapState()" << endl;
     testResult = (testPrintHeapState()) ? "Passed" : "Failed";
     cout << "-->>  Result: " << testResult << endl;
     cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
 
+    tests++;
     cout << "======================================================================" << endl;
     cout << "-->>  Running: testMassFunctCombo()" << endl;
     testResult = (testMassFunctCombo()) ? "Passed" : "Failed";
     cout << "-->>  Result: " << testResult << endl;
+    cout << "======================================================================" << endl << endl;
+    if(testResult == "Passed")
+        passed++;
+
+    cout << "======================================================================" << endl;
+    cout << "-->>  Successful Tests: " << passed << "/" << tests << endl;
     cout << "======================================================================" << endl << endl;
 
     return 0;
@@ -131,16 +172,25 @@ bool testVmallocSimple()
 
 bool testVmallocFill()
 {
+    struct forSizeStruct
+    {
+        int size;
+        bool isSet;
+        forSizeStruct *prev;
+        forSizeStruct *next;
+    };
+
     MemHeap heapObj;
 
-    char *myNewCharArray = (char*)heapObj.vmalloc(sizeof(char) * (TEST_HEAP_SIZE - 24));
-    for(int i = 0; i < TEST_HEAP_SIZE - 24; i += 3) {
+    int numChars = TEST_HEAP_SIZE - sizeof(forSizeStruct);
+
+    char *myNewCharArray = (char*)heapObj.vmalloc(sizeof(char) * (numChars));
+    for(int i = 0; i < numChars; i += 2) {
         myNewCharArray[i] = 'a';
         myNewCharArray[i + 1] = 'b';
-        myNewCharArray[i + 2] = 'c';
     }
 
-    bool result = (myNewCharArray[0] == 'a' && myNewCharArray[TEST_HEAP_SIZE - 25] == 'b') ? true : false;
+    bool result = (myNewCharArray[0] == 'a' && myNewCharArray[numChars - 1] == 'b') ? true : false;
     return result;
 }
 
@@ -183,16 +233,25 @@ bool testVcallocSimple()
 bool testVcallocFill()
 {
     return false;
+    struct forSizeStruct
+    {
+        int size;
+        bool isSet;
+        forSizeStruct *prev;
+        forSizeStruct *next;
+    };
+
     MemHeap heapObj;
 
-    char *myNewCharArray = (char*)heapObj.vcalloc(sizeof(char) * (TEST_HEAP_SIZE - 24));
-    for(int i = 0; i < TEST_HEAP_SIZE - 24; i += 3) {
+    int numChars = TEST_HEAP_SIZE - sizeof(forSizeStruct);
+    
+    char *myNewCharArray = (char*)heapObj.vmalloc(sizeof(char) * (numChars));
+    for(int i = 0; i < numChars; i += 2) {
         myNewCharArray[i] = 'a';
         myNewCharArray[i + 1] = 'b';
-        myNewCharArray[i + 2] = 'c';
     }
 
-    bool result = (myNewCharArray[0] == 'a' && myNewCharArray[TEST_HEAP_SIZE - 25] == 'b') ? true : false;
+    bool result = (myNewCharArray[0] == 'a' && myNewCharArray[numChars - 1] == 'b') ? true : false;
     return result;
 }
 
@@ -247,7 +306,7 @@ bool testVsizeof()
     *myNewInt = 123456;
     cout << "Name: myNewInt   " << "   Value: " << *myNewInt << "    Address: " << myNewInt << "   Size: " << heapObj.vsizeof(myNewInt) << endl;
 
-    bool result = (heapObj.vsizeof(myNewInt) == 28) ? true : false;
+    bool result = (heapObj.vsizeof(myNewInt) == sizeof(int)) ? true : false;
     return result;
 }
 
@@ -332,8 +391,7 @@ bool testMassFunctCombo()
     myLongArray[6] = 77777;
     myLongArray[7] = 88888;
     myLongArray[8] = 99999;
-
-    cout << "myLongArray:" << endl;
+    cout << "Name: myLongArray  " << "   Address: " << (long*)myLongArray << "   Size: " << heapObj.vsizeof(myLongArray) << endl;
     for(int i = 0; i < 9; i++)
         cout << "Index " << i << " = " << myLongArray[i] << " @ address: " << &myLongArray[i] << endl;
 

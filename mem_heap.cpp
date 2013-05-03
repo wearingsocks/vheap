@@ -6,12 +6,12 @@ using namespace std;
 MemHeap::MemHeap()
 {
     mStartOfHeap = vheap;
-    mEndOfHeap = mStartOfHeap + HEAP_SIZE;
+    mEndOfHeap = (char*)mStartOfHeap + HEAP_SIZE;
     mHeaderSize = sizeof(Header);
 
     Header *newBlock = (Header*)mStartOfHeap;
     newBlock->isSet = false;
-    newBlock->size = HEAP_SIZE;
+    newBlock->size = HEAP_SIZE - mHeaderSize;
     newBlock->next = NULL;
     newBlock->prev = NULL;
 }
@@ -19,27 +19,26 @@ MemHeap::MemHeap()
 void* MemHeap::vmalloc(size_t size)
 {
     void *newBlockAddress = NULL;
-    int newBlockSize = size + mHeaderSize;
 
     Header *newBlock = (Header*)mStartOfHeap;
     while(newBlock && !newBlockAddress) {
         if(!newBlock->isSet) {
-            if(newBlock->size >= newBlockSize) {
+            if(newBlock->size >= size) {
 
-                if(newBlock->size >= newBlockSize + mHeaderSize) {
-                    Header *nextBlock = (Header*)((void*)newBlock + newBlockSize);
-                    nextBlock->size = newBlock->size - newBlockSize;
+                if(newBlock->size >= size + mHeaderSize) {
+                    Header *nextBlock = (Header*)((char*)newBlock + (size + mHeaderSize));
+                    nextBlock->size = newBlock->size - (size + mHeaderSize);
                     nextBlock->isSet = false;
                     nextBlock->next = newBlock->next;
                     nextBlock->prev = newBlock;
 
-                    newBlock->size = newBlockSize;
+                    newBlock->size = size;
                     newBlock->isSet = true;
                     newBlock->next = nextBlock;
                     newBlockAddress = newBlock;
                 }
                 else {
-                    newBlock->size = newBlockSize;
+                    newBlock->size = size;
                     newBlock->isSet = true;
                     newBlockAddress = newBlock;
                 }
@@ -52,7 +51,7 @@ void* MemHeap::vmalloc(size_t size)
     if(!newBlockAddress)
         throw "Not enough memory found.";
     else
-        newBlockAddress += mHeaderSize;
+        newBlockAddress = (char*)newBlockAddress + mHeaderSize;
 
     return newBlockAddress;
 }
@@ -68,20 +67,56 @@ void MemHeap::vfree(void* mem)
         return;
     Header *ptr = (Header*)mem;
     ptr--;
-    ptr->isSet = false;
 
+    void *nextAddress;
     if(ptr->next && !ptr->next->isSet) {
-        ptr->size += ptr->next->size;
-        ptr->next = ptr->next->next;
-        if(ptr->next)
-            ptr->next->prev = ptr;
+        if(ptr->next->next)
+            nextAddress = ptr->next->next;
+        else
+            nextAddress = mEndOfHeap;
     }
+    else if(ptr->next)
+        nextAddress = ptr->next;
+    else
+        nextAddress = mEndOfHeap;
+
+    void *prevAddress;
     if(ptr->prev && !ptr->prev->isSet) {
-        ptr->prev->size += ptr->size;
-        ptr->prev->next = ptr->next;
-        if(ptr->prev->next)
-            ptr->prev->next->prev = ptr->prev;
+        if(ptr->prev->prev)
+            prevAddress = ptr->prev->prev;
+        else
+            prevAddress = mStartOfHeap;
     }
+    else if(ptr->prev)
+        prevAddress = ptr->prev;
+    else
+        prevAddress = mStartOfHeap;
+
+    Header *nextBlock = (Header*)nextAddress;
+    Header *prevBlock = (Header*)prevAddress;
+
+    Header *newBlock;
+    if(prevBlock != mStartOfHeap || (prevBlock->isSet && prevBlock != ptr))
+        newBlock = (Header*)((char*)prevBlock + prevBlock->size + mHeaderSize);
+    else
+        newBlock = (Header*)mStartOfHeap;
+
+    newBlock->isSet = false;
+    newBlock->size = ((char*)nextBlock - (char*)newBlock) - mHeaderSize;
+
+    if(nextBlock != mEndOfHeap) {
+        newBlock->next = nextBlock;
+        nextBlock->prev = newBlock;
+    }
+    else
+        newBlock->next = NULL;
+
+    if(prevBlock != mStartOfHeap) {
+        newBlock->prev = prevBlock;
+        prevBlock->next = newBlock;
+    }
+    else
+        newBlock->prev = NULL;
 }
 
 size_t MemHeap::vsizeof(void* mem)
@@ -100,19 +135,19 @@ void MemHeap::printHeapState()
         if(printBlock->isSet) {
             for(int i = 0; i < mHeaderSize; i++)
                 cout << 'I';
-            for(int i = 0; i < printBlock->size - mHeaderSize; i++)
+            for(int i = 0; i < printBlock->size; i++)
                 cout << 'D';
-            for(char* i = (char*)printBlock + printBlock->size; i < (void*)printBlock->next; i++)
+            for(char* i = (char*)printBlock + printBlock->size + mHeaderSize; i < (void*)printBlock->next; i++)
                 cout << 'F';
         }
         else {
             for(int i = 0; i < mHeaderSize; i++)
                 cout << 'I';
-            for(int i = 0; i < printBlock->size - mHeaderSize; i++)
+            for(int i = 0; i < printBlock->size; i++)
                 cout << 'F';
         }
         if(!printBlock->next) {
-            for(char* i = (char*)printBlock + printBlock->size; i < mEndOfHeap; i++)
+            for(char* i = (char*)printBlock + printBlock->size + mHeaderSize; i < mEndOfHeap; i++)
                 cout << 'F';
         }
         printBlock = printBlock->next;
