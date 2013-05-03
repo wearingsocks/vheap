@@ -211,20 +211,49 @@ bool testVmallocOverflow()
 
 bool testVcallocSimple()
 {
-    return false;
     MemHeap heapObj;
 
-    char *myNewChar = (char*)heapObj.vmalloc(sizeof(char));
+    char *myNewChar = (char*)heapObj.vcalloc(sizeof(char));
+    cout << "Name: myNewChar  " << "   Address: " << myNewChar << "   Size: " << heapObj.vsizeof(myNewChar) << endl;
+    cout << "  Before - Value: " << *myNewChar << "              Bits: ";
+    char *blockByte = myNewChar;
+    for(int i = 0; i < heapObj.vsizeof(myNewChar); i++, blockByte++)
+        cout << *blockByte;
+    cout << endl;
     *myNewChar = 'a';
-    cout << "Name: myNewChar  " << "   Value: " << *myNewChar << "         Address: " << (int*)myNewChar << "   Size: " << heapObj.vsizeof(myNewChar) << endl;
+    cout << "  After  - Value: " << *myNewChar << "              Bits: ";
+    blockByte = myNewChar;
+    for(int i = 0; i < heapObj.vsizeof(myNewChar); i++, blockByte++)
+        cout << *blockByte;
+    cout << endl;
 
-    int *myNewInt = (int*)heapObj.vmalloc(sizeof(int));
+    int *myNewInt = (int*)heapObj.vcalloc(sizeof(int));
+    cout << "Name: myNewInt   " << "   Address: " << myNewInt << "   Size: " << heapObj.vsizeof(myNewInt) << endl;
+    cout << "  Before - Value: " << *myNewInt << "      Bits: ";
+    blockByte = (char*)myNewInt;
+    for(int i = 0; i < heapObj.vsizeof(myNewInt); i++, blockByte++)
+        cout << *blockByte;
+    cout << endl;
     *myNewInt = 123456;
-    cout << "Name: myNewInt   " << "   Value: " << *myNewInt << "    Address: " << myNewInt << "   Size: " << heapObj.vsizeof(myNewInt) << endl;
+    cout << "  After  - Value: " << *myNewInt << "         Bits: ";
+    blockByte = (char*)myNewInt;
+    for(int i = 0; i < heapObj.vsizeof(myNewInt); i++, blockByte++)
+        cout << *blockByte;
+    cout << endl;
 
-    double *myNewDouble = (double*)heapObj.vmalloc(sizeof(double));
+    double *myNewDouble = (double*)heapObj.vcalloc(sizeof(double));
+    cout << "Name: myNewDouble" << "   Address: " << myNewDouble << "   Size: " << heapObj.vsizeof(myNewDouble) << endl;
+    cout << "  Before - Value: " << *myNewDouble << "    Bits: ";
+    blockByte = (char*)myNewDouble;
+    for(int i = 0; i < heapObj.vsizeof(myNewDouble); i++, blockByte++)
+        cout << *blockByte;
+    cout << endl;
     *myNewDouble = 12.3456;
-    cout << "Name: myNewDouble" << "   Value: " << *myNewDouble << "   Address: " << myNewDouble << "   Size: " << heapObj.vsizeof(myNewDouble) << endl;
+    cout << "  After  - Value: " << *myNewDouble << "        Bits: ";
+    blockByte = (char*)myNewDouble;
+    for(int i = 0; i < heapObj.vsizeof(myNewDouble); i++, blockByte++)
+        cout << *blockByte;
+    cout << endl;
 
     bool result = (*myNewChar == 'a' && *myNewInt == 123456 && *myNewDouble == 12.3456) ? true : false;
     return result;
@@ -232,7 +261,6 @@ bool testVcallocSimple()
 
 bool testVcallocFill()
 {
-    return false;
     struct forSizeStruct
     {
         int size;
@@ -257,7 +285,6 @@ bool testVcallocFill()
 
 bool testVcallocOverflow()
 {
-    return false;
     bool result = false;
     MemHeap heapObj;
 
@@ -348,11 +375,11 @@ bool testMassFunctCombo()
 
     int *myNewInt2 = (int*)heapObj.vmalloc(sizeof(int));
     *myNewInt2 = 654321;
-    cout << "Name: myNewInt2   " << "   Value: " << *myNewInt2 << "    Address: " << myNewInt2 << "   Size: " << heapObj.vsizeof(myNewInt2) << endl;
+    cout << "Name: myNewInt2   " << "  Value: " << *myNewInt2 << "    Address: " << myNewInt2 << "   Size: " << heapObj.vsizeof(myNewInt2) << endl;
 
     int *myNewInt3 = (int*)heapObj.vmalloc(sizeof(int));
     *myNewInt3 = 332211;
-    cout << "Name: myNewInt3   " << "   Value: " << *myNewInt3 << "    Address: " << myNewInt3 << "   Size: " << heapObj.vsizeof(myNewInt3) << endl;
+    cout << "Name: myNewInt3   " << "  Value: " << *myNewInt3 << "    Address: " << myNewInt3 << "   Size: " << heapObj.vsizeof(myNewInt3) << endl;
 
     double *myNewDouble = (double*)heapObj.vmalloc(sizeof(double));
     *myNewDouble = 12.3456;

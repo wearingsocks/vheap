@@ -58,7 +58,15 @@ void* MemHeap::vmalloc(size_t size)
 
 void* MemHeap::vcalloc(size_t size)
 {
-
+    void *newBlockAddress = vmalloc(size);
+    Header *newBlock = (Header*)newBlockAddress;
+    newBlock--;
+    char *newBlockByte = (char*)newBlockAddress;
+    for(int i = 0; i < newBlock->size; i++) {
+        *newBlockByte = '0';
+        newBlockByte++;
+    }
+    return newBlockAddress;
 }
 
 void MemHeap::vfree(void* mem)
