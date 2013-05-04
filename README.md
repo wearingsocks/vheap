@@ -15,6 +15,14 @@ Day3+
 Day3++
 *Implemented & Tested vcalloc()
 
+Day4
+*vmalloc() input size checking
+*Code optimisation
+*Variable descriptive renaming
+*Asserts implemented
+*Tests assessed/redesigned/restructured
+*Commenting
+
 
 Function list and status:
 
@@ -50,5 +58,5 @@ printHeapState()
 
 Main.cpp
 --Implemented
---Vcalloc Testing
---Incomplete
+--Tested
+--Complete
