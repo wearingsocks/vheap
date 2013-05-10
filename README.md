@@ -23,6 +23,9 @@ Day4
 *Tests assessed/redesigned/restructured
 *Commenting
 
+LastDay
+*Removed data members
+*Moved test cout into test functions
 
 Function list and status:
 

@@ -20,13 +20,11 @@ using namespace std;
  */
 MemHeap::MemHeap()
 {
-    mStartOfHeap = vheap;
-    mEndOfHeap = (char*)mStartOfHeap + HEAP_SIZE;
-    mHeaderSize = sizeof(Header);
+    char *startOfHeap = vheap;
 
-    Header *newBlock = (Header*)mStartOfHeap;
+    Header *newBlock = (Header*)startOfHeap;
     newBlock->isSet = false;
-    newBlock->size = HEAP_SIZE - mHeaderSize;
+    newBlock->size = HEAP_SIZE - sizeof(Header);
     newBlock->next = NULL;
     newBlock->prev = NULL;
 
@@ -36,10 +34,10 @@ MemHeap::MemHeap()
         cout << "|=============================|" << endl;
         cout << "|         What | Where        |" << endl;
         cout << "|=============================|" << endl;
-        cout << "|  Header Size | " << mHeaderSize << "           |" << endl;
+        cout << "|  Header Size | " << sizeof(Header) << "           |" << endl;
         cout << "|    &VHEAP[0] | " << (int*)&vheap[0] << "    |" << endl;
-        cout << "|Start Of Heap | " << mStartOfHeap << "    |" << endl;
-        cout << "|  End Of Heap | " << (int*)((char*)mEndOfHeap - 1) << "    |" << endl;
+        cout << "|Start Of Heap | " << (int*)startOfHeap << "    |" << endl;
+        cout << "|  End Of Heap | " << (int*)(startOfHeap + HEAP_SIZE - 1) << "    |" << endl;
         cout << "|=============================|" << endl;
         cout << "| All addresses are inclusive |" << endl;
         cout << "|=============================|" << endl;
@@ -57,16 +55,18 @@ MemHeap::MemHeap()
  */
 void* MemHeap::vmalloc(size_t size)
 {
+    char *startOfHeap = vheap;
+
     if(size == 0)
         throw "Invalid size: 0";
     void *newBlockAddress = NULL;
 
-    Header *newBlock = (Header*)mStartOfHeap;
+    Header *newBlock = (Header*)startOfHeap;
     while(newBlock && !newBlockAddress) {
-        if(!newBlock->isSet && newBlock->size >= size) {
-            if(newBlock->size >= size + mHeaderSize) {
-                Header *nextBlock = (Header*)((char*)newBlock + (size + mHeaderSize));
-                nextBlock->size = newBlock->size - (size + mHeaderSize);
+        if(!newBlock->isSet && newBlock->size >= size) { // Is this memory section free and big enough?
+            if(newBlock->size >= size + sizeof(Header)) { // Do we have enough memory left over to create another section?
+                Header *nextBlock = (Header*)((char*)newBlock + (size + sizeof(Header)));
+                nextBlock->size = newBlock->size - (size + sizeof(Header));
                 nextBlock->isSet = false;
                 nextBlock->next = newBlock->next;
                 nextBlock->prev = newBlock;
@@ -89,7 +89,7 @@ void* MemHeap::vmalloc(size_t size)
     if(!newBlockAddress)
         throw "Not enough memory found.";
     else
-        newBlockAddress = (char*)newBlockAddress + mHeaderSize;
+        newBlockAddress = (char*)newBlockAddress + sizeof(Header);
 
     #ifdef DEBUG
         Header *testBlock = (Header*)newBlockAddress;
@@ -101,10 +101,10 @@ void* MemHeap::vmalloc(size_t size)
         cout << "|=============================|" << endl;
         cout << "|  Block Start | " << testBlock << "    |" << endl;
         cout << "|   Head Start | " << testBlock << "    |" << endl;
-        cout << "|     Head End | " << (int*)((char*)testBlock + mHeaderSize - 1) << "    |" << endl;
+        cout << "|     Head End | " << (int*)((char*)testBlock + sizeof(Header) - 1) << "    |" << endl;
         cout << "|   Data Start | " << newBlockAddress << "    |" << endl;
         cout << "|     Data End | " << (int*)((char*)newBlockAddress + size - 1) << "    |" << endl;
-        cout << "|    Block End | " << (int*)((char*)testBlock + mHeaderSize + size - 1) << "    |" << endl;
+        cout << "|    Block End | " << (int*)((char*)testBlock + sizeof(Header) + size - 1) << "    |" << endl;
         cout << "|=============================|" << endl;
         cout << "| All addresses are inclusive |" << endl;
         cout << "|=============================|" << endl;
@@ -142,47 +142,55 @@ void* MemHeap::vcalloc(size_t size)
  */
 void MemHeap::vfree(void* mem)
 {
+    void *startOfHeap = vheap;
+    void *endOfHeap = (char*)startOfHeap + HEAP_SIZE;
+
     if(!mem)
         return;
     Header *block = (Header*)mem;
     block--;
 
+    // Lets find the next set memory section's address
     void *nextAddress;
     if(block->next && !block->next->isSet)
-        nextAddress = (block->next->next) ? block->next->next : mEndOfHeap;
+        nextAddress = (block->next->next) ? block->next->next : endOfHeap;
     else if(block->next)
         nextAddress = block->next;
     else
-        nextAddress = mEndOfHeap;
+        nextAddress = endOfHeap;
 
+    // Lets find the previous set memory section's address
     void *prevAddress;
     if(block->prev && !block->prev->isSet)
-        prevAddress = (block->prev->prev) ? block->prev->prev : mStartOfHeap;
+        prevAddress = (block->prev->prev) ? block->prev->prev : startOfHeap;
     else if(block->prev)
         prevAddress = block->prev;
     else
-        prevAddress = mStartOfHeap;
+        prevAddress = startOfHeap;
 
+    // Now we have our next and previous used memory sections
     Header *nextBlock = (Header*)nextAddress;
     Header *prevBlock = (Header*)prevAddress;
 
+    // Lets create a new unused section from the end of our previous block
+    // to the start of our next block
     Header *newBlock;
-    if(prevBlock != mStartOfHeap || (prevBlock->isSet && prevBlock != block))
-        newBlock = (Header*)((char*)prevBlock + prevBlock->size + mHeaderSize);
+    if(prevBlock != startOfHeap || (prevBlock->isSet && prevBlock != block))
+        newBlock = (Header*)((char*)prevBlock + prevBlock->size + sizeof(Header));
     else
-        newBlock = (Header*)mStartOfHeap;
+        newBlock = (Header*)startOfHeap;
 
     newBlock->isSet = false;
-    newBlock->size = ((char*)nextBlock - (char*)newBlock) - mHeaderSize;
+    newBlock->size = ((char*)nextBlock - (char*)newBlock) - sizeof(Header);
 
-    if(nextBlock != mEndOfHeap) {
+    if(nextBlock != endOfHeap) {
         newBlock->next = nextBlock;
         nextBlock->prev = newBlock;
     }
     else
         newBlock->next = NULL;
 
-    if(prevBlock != mStartOfHeap) {
+    if(prevBlock != startOfHeap) {
         newBlock->prev = prevBlock;
         prevBlock->next = newBlock;
     }
@@ -197,10 +205,10 @@ void MemHeap::vfree(void* mem)
         cout << "|=============================|" << endl;
         cout << "|  Block Start | " << newBlock << "    |" << endl;
         cout << "|   Head Start | " << newBlock << "    |" << endl;
-        cout << "|     Head End | " << (int*)((char*)newBlock + mHeaderSize - 1) << "    |" << endl;
-        cout << "|   Data Start | " << (int*)((char*)newBlock + mHeaderSize) << "    |" << endl;
-        cout << "|     Data End | " << (int*)((char*)newBlock + mHeaderSize + newBlock->size - 1) << "    |" << endl;
-        cout << "|    Block End | " << (int*)((char*)newBlock + mHeaderSize + newBlock->size - 1) << "    |" << endl;
+        cout << "|     Head End | " << (int*)((char*)newBlock + sizeof(Header) - 1) << "    |" << endl;
+        cout << "|   Data Start | " << (int*)((char*)newBlock + sizeof(Header)) << "    |" << endl;
+        cout << "|     Data End | " << (int*)((char*)newBlock + sizeof(Header) + newBlock->size - 1) << "    |" << endl;
+        cout << "|    Block End | " << (int*)((char*)newBlock + sizeof(Header) + newBlock->size - 1) << "    |" << endl;
         cout << "|=============================|" << endl;
         cout << "| All addresses are inclusive |" << endl;
         cout << "|=============================|" << endl;
@@ -232,24 +240,26 @@ size_t MemHeap::vsizeof(void* mem)
  */
 void MemHeap::printHeapState()
 {
-    Header *block = (Header*)mStartOfHeap;
+    char *startOfHeap = vheap;
+
+    Header *block = (Header*)startOfHeap;
     while(block) {
         if(block->isSet) {
-            for(int i = 0; i < mHeaderSize; i++)
+            for(int i = 0; i < sizeof(Header); i++)
                 cout << 'I';
             for(int i = 0; i < block->size; i++)
                 cout << 'D';
-            for(char* i = (char*)block + block->size + mHeaderSize; i < (void*)block->next; i++)
+            for(char* i = (char*)block + block->size + sizeof(Header); i < (void*)block->next; i++)
                 cout << 'F';
         }
         else {
-            for(int i = 0; i < mHeaderSize; i++)
+            for(int i = 0; i < sizeof(Header); i++)
                 cout << 'I';
             for(int i = 0; i < block->size; i++)
                 cout << 'F';
         }
         if(!block->next) {
-            for(char* i = (char*)block + block->size + mHeaderSize; i < mEndOfHeap; i++)
+            for(char* i = (char*)block + block->size + sizeof(Header); i < startOfHeap + HEAP_SIZE; i++)
                 cout << 'F';
         }
         block = block->next;

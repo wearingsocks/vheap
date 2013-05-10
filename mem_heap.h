@@ -30,10 +30,6 @@ class MemHeap : public VHeap
         Header *next;
     };
 
-    void* mStartOfHeap; // Memory address of the start position of the heap (inclusive)
-    void* mEndOfHeap; // Memory address of the end position of the heap (exclusive)
-    int mHeaderSize; // The size in bytes of a Header struct
-
 public:
     MemHeap();
 

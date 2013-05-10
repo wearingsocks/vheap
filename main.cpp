@@ -50,169 +50,123 @@ int main()
     int totalNumTests = 0, totalNumPassed = 0;
 
     int selection = 0;
-    while(selection != 8) {
+    while(selection != 9) {
         selection = menu();
         int numTests = 0, numPassed = 0;
         switch(selection) {
             case 1:
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->> Running: testConstructor()" << endl;
-                testResult = (testConstructor()) ? "Passed" : "Failed";
-                cout << "-->> Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testConstructor())
                     numPassed++;
-
-                totalNumTests += numTests;
-                totalNumPassed += numPassed;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Successful Tests: " << numPassed << "/" << numTests << endl;
-                cout << "======================================================================" << endl << endl;
                 break;
             case 2:
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->> Running: testVmallocSimple()" << endl;
-                testResult = (testVmallocSimple()) ? "Passed" : "Failed";
-                cout << "-->> Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testVmallocSimple())
                     numPassed++;
 
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Running: testVmallocFill()" << endl;
-                testResult = (testVmallocFill()) ? "Passed" : "Failed";
-                cout << "-->>  Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testVmallocFill())
                     numPassed++;
 
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Running: testVmallocOverflow()" << endl;
-                testResult = (testVmallocOverflow()) ? "Passed" : "Failed";
-                cout << "-->>  Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testVmallocOverflow())
                     numPassed++;
-
-                totalNumTests += numTests;
-                totalNumPassed += numPassed;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Successful Tests: " << numPassed << "/" << numTests << endl;
-                cout << "======================================================================" << endl << endl;
                 break;
             case 3:
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->> Running: testVcallocSimple()" << endl;
-                testResult = (testVcallocSimple()) ? "Passed" : "Failed";
-                cout << "-->> Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testVcallocSimple())
                     numPassed++;
 
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Running: testVcallocFill()" << endl;
-                testResult = (testVcallocFill()) ? "Passed" : "Failed";
-                cout << "-->>  Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testVcallocFill())
                     numPassed++;
 
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Running: testVcallocOverflow()" << endl;
-                testResult = (testVcallocOverflow()) ? "Passed" : "Failed";
-                cout << "-->>  Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testVcallocOverflow())
                     numPassed++;
-
-                totalNumTests += numTests;
-                totalNumPassed += numPassed;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Successful Tests: " << numPassed << "/" << numTests << endl;
-                cout << "======================================================================" << endl << endl;
                 break;
             case 4:
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Running: testVfreeSimple()" << endl;
-                testResult = (testVfreeSimple()) ? "Passed" : "Failed";
-                cout << "-->>  Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testVfreeSimple())
                     numPassed++;
-
-                totalNumTests += numTests;
-                totalNumPassed += numPassed;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Successful Tests: " << numPassed << "/" << numTests << endl;
-                cout << "======================================================================" << endl << endl;
                 break;
             case 5:
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Running: testVsizeof()" << endl;
-                testResult = (testVsizeof()) ? "Passed" : "Failed";
-                cout << "-->>  Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testVsizeof())
                     numPassed++;
 
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Running: testVsizeofNULL()" << endl;
-                testResult = (testVsizeofNULL()) ? "Passed" : "Failed";
-                cout << "-->>  Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testVsizeofNULL())
                     numPassed++;
-
-                totalNumTests += numTests;
-                totalNumPassed += numPassed;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Successful Tests: " << numPassed << "/" << numTests << endl;
-                cout << "======================================================================" << endl << endl;
                 break;
             case 6:
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Running: testPrintHeapState()" << endl;
-                testResult = (testPrintHeapState()) ? "Passed" : "Failed";
-                cout << "-->>  Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testPrintHeapState())
                     numPassed++;
-
-                totalNumTests += numTests;
-                totalNumPassed += numPassed;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Successful Tests: " << numPassed << "/" << numTests << endl;
-                cout << "======================================================================" << endl << endl;
                 break;
             case 7:
                 numTests++;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Running: testMassFunctCombo()" << endl;
-                testResult = (testMassFunctCombo()) ? "Passed" : "Failed";
-                cout << "-->>  Result: " << testResult << endl;
-                cout << "======================================================================" << endl << endl << endl;
-                if(testResult == "Passed")
+                if(testMassFunctCombo())
+                    numPassed++;
+                break;
+            case 8:
+                numTests++;
+                if(testConstructor())
+                    numPassed++;
+                
+                numTests++;
+                if(testVmallocSimple())
                     numPassed++;
 
-                totalNumTests += numTests;
-                totalNumPassed += numPassed;
-                cout << "======================================================================" << endl;
-                cout << "-->>  Successful Tests: " << numPassed << "/" << numTests << endl;
-                cout << "======================================================================" << endl << endl;
+                numTests++;
+                if(testVmallocFill())
+                    numPassed++;
+
+                numTests++;
+                if(testVmallocOverflow())
+                    numPassed++;
+                
+                numTests++;
+                if(testVcallocSimple())
+                    numPassed++;
+
+                numTests++;
+                if(testVcallocFill())
+                    numPassed++;
+
+                numTests++;
+                if(testVcallocOverflow())
+                    numPassed++;
+                
+                numTests++;
+                if(testVfreeSimple())
+                    numPassed++;
+                
+                numTests++;
+                if(testVsizeof())
+                    numPassed++;
+
+                numTests++;
+                if(testVsizeofNULL())
+                    numPassed++;
+                
+                numTests++;
+                if(testPrintHeapState())
+                    numPassed++;
+                
+                numTests++;
+                if(testMassFunctCombo())
+                    numPassed++;
                 break;
             default:
                 break;
+        }
+        if(numTests) {
+            totalNumTests += numTests;
+            totalNumPassed += numPassed;
+            cout << "======================================================================" << endl;
+            cout << "-->>  Successful Tests: " << numPassed << "/" << numTests << endl;
+            cout << "======================================================================" << endl << endl;
         }
     }
 
@@ -241,14 +195,15 @@ int menu() {
     cout << " 5. vsizeof()" << endl;
     cout << " 6. printHeapState()" << endl;
     cout << " 7. MassFunctionCombo" << endl;
-    cout << " 8. Quit" << endl;
+    cout << " 8. Run all tests" << endl;
+    cout << " 9. Quit" << endl;
 
     cout << " Enter a test number: ";
     cin >> selection;
     cout << endl << endl;
 
-    if(!cin || selection < 1 || selection > 8)
-        selection = 8;
+    if(!cin || selection < 1 || selection > 9)
+        selection = 9;
 
     return selection;
 }
@@ -263,8 +218,15 @@ int menu() {
  */
 bool testConstructor()
 {
+    bool result = true;
+    cout << "======================================================================" << endl;
+    cout << "-->> Running: testConstructor()" << endl;
+
     MemHeap heapObj;
-    return true;
+
+    cout << "-->> Result: " << ((result) ? "Passed" : "Failed" )<< endl;
+    cout << "======================================================================" << endl << endl << endl;
+    return result;
 }
 
 /**
@@ -280,6 +242,9 @@ bool testConstructor()
 bool testVmallocSimple()
 {
     bool result = false;
+    cout << "======================================================================" << endl;
+    cout << "-->> Running: testVmallocSimple()" << endl;
+    
     MemHeap heapObj;
 
     cout << "\nCreating char...." << endl;
@@ -297,6 +262,7 @@ bool testVmallocSimple()
     *myNewDouble = 12.3456;
     cout << "Summary of double: Value = " << *myNewDouble << ", Address = " << myNewDouble << ", Size = " << heapObj.vsizeof(myNewDouble) << endl;
 
+    cout << "\nCreating int of size 0" << endl;
     try {
         int *myNewInt2 = (int*)heapObj.vmalloc(0)   ;
     } catch (const char* msg) {
@@ -305,6 +271,9 @@ bool testVmallocSimple()
     }
     
     result = (*myNewChar == 'a' && *myNewInt == 123456 && *myNewDouble == 12.3456 && result) ? true : false;
+
+    cout << "-->> Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
     return result;
 }
 
@@ -319,6 +288,10 @@ bool testVmallocSimple()
  */
 bool testVmallocFill()
 {
+    bool result = false;
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVmallocFill()" << endl;
+    
     struct forSizeStruct
     {
         int size;
@@ -339,7 +312,10 @@ bool testVmallocFill()
     }
     cout << "Summary of char[]: Value @ [0] = " << myNewCharArray[0] << ", Address = " << (int*)myNewCharArray << ", Size = " << heapObj.vsizeof(myNewCharArray) << endl;
 
-    bool result = (myNewCharArray[0] == 'a' && myNewCharArray[numChars - 1] == 'b') ? true : false;
+    result = (myNewCharArray[0] == 'a' && myNewCharArray[numChars - 1] == 'b') ? true : false;
+
+    cout << "-->>  Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
     return result;
 }
 
@@ -355,6 +331,9 @@ bool testVmallocFill()
 bool testVmallocOverflow()
 {
     bool result = false;
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVmallocOverflow()" << endl;
+
     MemHeap heapObj;
 
     cout << "\nCreating int[" << TEST_HEAP_SIZE / sizeof(int) << "]...." << endl;
@@ -365,6 +344,8 @@ bool testVmallocOverflow()
         result = true;
     }
 
+    cout << "-->>  Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
     return result;
 }
 
@@ -378,6 +359,10 @@ bool testVmallocOverflow()
  */
 bool testVcallocSimple()
 {
+    bool result = false;
+    cout << "======================================================================" << endl;
+    cout << "-->> Running: testVcallocSimple()" << endl;
+    
     MemHeap heapObj;
 
     cout << "\nCreating int...." << endl;
@@ -410,7 +395,10 @@ bool testVcallocSimple()
         cout << *blockByte;
     cout << endl;
 
-    bool result = (*myNewInt == 123456 && *myNewDouble == 12.3456) ? true : false;
+    result = (*myNewInt == 123456 && *myNewDouble == 12.3456) ? true : false;
+
+    cout << "-->> Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
     return result;
 }
 
@@ -425,6 +413,10 @@ bool testVcallocSimple()
  */
 bool testVcallocFill()
 {
+    bool result = false;
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVcallocFill()" << endl;
+    
     struct forSizeStruct
     {
         int size;
@@ -445,7 +437,10 @@ bool testVcallocFill()
     }
     cout << "Summary of char[]: Value @ [0] = " << myNewCharArray[0] << ", Address = " << (int*)myNewCharArray << ", Size = " << heapObj.vsizeof(myNewCharArray) << endl;
 
-    bool result = (myNewCharArray[0] == 'a' && myNewCharArray[numChars - 1] == 'b') ? true : false;
+    result = (myNewCharArray[0] == 'a' && myNewCharArray[numChars - 1] == 'b') ? true : false;
+
+    cout << "-->> Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
     return result;
 }
 
@@ -461,6 +456,9 @@ bool testVcallocFill()
 bool testVcallocOverflow()
 {
     bool result = false;
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVcallocOverflow()" << endl;
+    
     MemHeap heapObj;
 
     cout << "\nCreating int[" << TEST_HEAP_SIZE / sizeof(int) << "]...." << endl;
@@ -471,6 +469,8 @@ bool testVcallocOverflow()
         result = true;
     }
 
+    cout << "-->> Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
     return result;
 }
 
@@ -486,6 +486,10 @@ bool testVcallocOverflow()
  */
 bool testVfreeSimple()
 {
+    bool result = true;
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVfreeSimple()" << endl;
+
     MemHeap heapObj;
 
     cout << "\nCreating int...." << endl;
@@ -507,7 +511,9 @@ bool testVfreeSimple()
     cout << endl;
     heapObj.printHeapState();
 
-    return true;
+    cout << "-->>  Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
+    return result;
 }
 
 /**
@@ -520,6 +526,10 @@ bool testVfreeSimple()
  */
 bool testVsizeof()
 {
+    bool result = false;
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVsizeof()" << endl;
+    
     MemHeap heapObj;
 
     cout << "\nCreating int...." << endl;
@@ -527,7 +537,10 @@ bool testVsizeof()
     *myNewInt = 123456;
     cout << "Summary of int: Value = " << *myNewInt << ", Address = " << myNewInt << ", Size = " << heapObj.vsizeof(myNewInt) << endl;
 
-    bool result = (heapObj.vsizeof(myNewInt) == sizeof(int)) ? true : false;
+    result = (heapObj.vsizeof(myNewInt) == sizeof(int)) ? true : false;
+
+    cout << "-->>  Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
     return result;
 }
 
@@ -542,6 +555,9 @@ bool testVsizeof()
 bool testVsizeofNULL()
 {
     bool result = false;
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testVsizeofNULL()" << endl;
+    
     MemHeap heapObj;
 
     try {
@@ -551,6 +567,8 @@ bool testVsizeofNULL()
         result = true;
     }
 
+    cout << "-->>  Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
     return result;
 }
 
@@ -566,6 +584,10 @@ bool testVsizeofNULL()
  */
 bool testPrintHeapState()
 {
+    bool result = true;
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testPrintHeapState()" << endl;
+    
     MemHeap heapObj;
 
     cout << "\nCreating int...." << endl;
@@ -575,7 +597,9 @@ bool testPrintHeapState()
 
     heapObj.printHeapState();
 
-    return true;
+    cout << "-->>  Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
+    return result;
 }
 
 /**
@@ -591,6 +615,10 @@ bool testPrintHeapState()
  */
 bool testMassFunctCombo()
 {
+    bool result = true;
+    cout << "======================================================================" << endl;
+    cout << "-->>  Running: testMassFunctCombo()" << endl;
+    
     MemHeap heapObj;
     
     cout << "\nCreating int...." << endl;
@@ -654,5 +682,7 @@ bool testMassFunctCombo()
     cout << endl;
     heapObj.printHeapState();
 
-    return true;
+    cout << "-->>  Result: " << ((result) ? "Passed" : "Failed") << endl;
+    cout << "======================================================================" << endl << endl << endl;
+    return result;
 }
